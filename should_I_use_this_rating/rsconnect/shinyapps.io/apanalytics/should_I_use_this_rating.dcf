@@ -1,0 +1,12 @@
+name: should_I_use_this_rating
+title: should_I_use_this_rating
+username:
+account: apanalytics
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1771994
+bundleId: 2780153
+url: https://apanalytics.shinyapps.io/should_I_use_this_rating/
+when: 1581009532.06321
+asMultiple: FALSE
+asStatic: FALSE

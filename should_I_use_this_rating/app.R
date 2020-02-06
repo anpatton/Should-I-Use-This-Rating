@@ -1,36 +1,67 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
+##############################################
+########## Should I Use This Rating ##########
+######### Application: Andrew Patton #########
+##############################################
 
-library(shiny)
+#### Packages for App ####
+library(knitr)
+library(kableExtra)
+library(shinythemes)
+library(shinycssloaders)
+library(DT)
+library(colorRamps)
+library(grDevices)
+library(tidyverse)
+library(colorspace)
+library(ggrepel)
+library(lubridate)
 
 # Define UI for application that draws a histogram
+
 ui <- fluidPage(
 
-    # Application title
-    titlePanel("Old Faithful Geyser Data"),
-
-    # Sidebar with a slider input for number of bins 
-    sidebarLayout(
-        sidebarPanel(
-            sliderInput("bins",
-                        "Number of bins:",
-                        min = 1,
-                        max = 50,
-                        value = 30)
-        ),
-
-        # Show a plot of the generated distribution
-        mainPanel(
-           plotOutput("distPlot")
-        )
+    navbarPage("How Not to Abuse Ratings",
+               tabPanel("About",
+                        mainPanel(h2("blah blah blah"),
+                                  htmlOutput("explainer"))
+               ),
+               tabPanel("Should I Use This Rating?",
+                        h4(a("Created by Andrew Patton (@anpatt7)", 
+                             style = "color: #1f2024", 
+                             href = "https://twitter.com/@anpatt7", 
+                             target = "_blank")),
+                        h5("words words wwords",
+                           style = "color: #991D37"),
+                        sidebarLayout(
+                            sidebarPanel(
+                                numericInput(inputId = "drtg",
+                                             label = "DRTG",
+                                             value = 100),
+                                numericInput(inputId = "ortg",
+                                             label = "ORTG",
+                                             value = 100),
+                                radioButtons(inputId = "count_type",
+                                             label = "Possessions or Time?",
+                                             choices = c("Possessions",
+                                                         "Time")),
+                                numericInput(inputId = "count_val",
+                                             label = "Number of Poss or Min.",
+                                             value = 200),
+                                numericInput(inputId = "count_val_test",
+                                             label = "How Many Poss or Min. to Test?",
+                                             value = 10),
+                                actionButton(inputId = "run_test",
+                                             label = "Should I Use This Rating?")
+                            ),
+                            mainPanel(
+                                verticalLayout(DT::dataTableOutput("test_table"),
+                                               plotOutput('test_table') %>% withSpinner(color = "#44a8f3")
+                                )
+                                )
+                            )
+                        )
+               )
     )
-)
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
