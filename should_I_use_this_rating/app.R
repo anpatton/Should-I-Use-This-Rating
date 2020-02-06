@@ -30,6 +30,10 @@ ui <- fluidPage(
                              style = "color: #1f2024", 
                              href = "https://twitter.com/@anpatt7", 
                              target = "_blank")),
+                        h4(a("Explanation by Ryan Davis (@rd11490): ", 
+                             style = "color: #1f2024", 
+                             href = "https://github.com/rd11490/NBA_Tutorials/tree/master/five_man_net_rating", 
+                             target = "_blank")),
                         h5("Enter the current rating information and how far out to project.",
                            style = "color: #991D37"),
                         sidebarLayout(

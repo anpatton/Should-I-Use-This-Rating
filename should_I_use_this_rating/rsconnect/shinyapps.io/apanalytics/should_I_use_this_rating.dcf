@@ -5,8 +5,8 @@ account: apanalytics
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 1771994
-bundleId: 2780554
+bundleId: 2780574
 url: https://apanalytics.shinyapps.io/should_I_use_this_rating/
-when: 1581020189.80764
+when: 1581020873.06024
 asMultiple: FALSE
 asStatic: FALSE
