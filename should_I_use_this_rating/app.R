@@ -43,7 +43,7 @@ ui <- fluidPage(
                                 radioButtons(inputId = "count_type",
                                              label = "Possessions or Minutes?",
                                              choices = c("Possessions",
-                                                         "Time")),
+                                                         "Minutes")),
                                 numericInput(inputId = "count_val",
                                              label = "Number of Poss or Min.",
                                              value = 200),
@@ -204,7 +204,7 @@ output$test_chart <- renderPlot({
             
         } else if(between(check_val, 201, 500) == TRUE){
             
-            pick_from <- c("Shrug Emoji (I Don't Know How to Actually Use One)",
+            pick_from <- c("Shrug Emoji",
                            "You Sure You Need This?",
                            "Caveat Heavily.",
                            "Only To Make Sixers Look Good.")
@@ -226,7 +226,7 @@ output$test_chart <- renderPlot({
             pick_from <- c("Actually, Yes.",
                            "Go For It, Champ.",
                            "Sick Job Stat Hunting.",
-                           "Make Sure to Thank Basketball Reference")
+                           "Make Sure to Thank BBall Reference.")
             
             color <- "#0CCE6B"
             
