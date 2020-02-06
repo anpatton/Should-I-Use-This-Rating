@@ -30,7 +30,7 @@ ui <- fluidPage(
                              style = "color: #1f2024", 
                              href = "https://twitter.com/@anpatt7", 
                              target = "_blank")),
-                        h4(a("Explanation by Ryan Davis (@rd11490): ", 
+                        h4(a("Explanation by Ryan Davis (@rd11490) ", 
                              style = "color: #1f2024", 
                              href = "https://github.com/rd11490/NBA_Tutorials/tree/master/five_man_net_rating", 
                              target = "_blank")),
@@ -164,11 +164,11 @@ output$test_table <- DT::renderDataTable({
         
         if("Minutes" %in% names(plotData())) {
             
-            caption <- paste0("Rating Chagnes Based on ", plotData()[1, 8] - plotData()[2, 8], " Additional Minutes")
+            caption <- paste0("Rating Changnes Based on ", plotData()[1, 8] - plotData()[2, 8], " Additional Minutes")
             
         } else {
             
-            caption <- paste0("Rating Chagnes Based on ", plotData()[1, 8] - plotData()[2, 8], " Additional Possesions")
+            caption <- paste0("Rating Changes Based on ", plotData()[1, 8] - plotData()[2, 8], " Additional Possesions")
             
         }
         
