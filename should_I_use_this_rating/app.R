@@ -164,7 +164,7 @@ output$test_table <- DT::renderDataTable({
         
         if("Minutes" %in% names(plotData())) {
             
-            caption <- paste0("Rating Changnes Based on ", plotData()[1, 8] - plotData()[2, 8], " Additional Minutes")
+            caption <- paste0("Rating Changes Based on ", plotData()[1, 8] - plotData()[2, 8], " Additional Minutes")
             
         } else {
             
