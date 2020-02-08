@@ -34,7 +34,8 @@ ui <- fluidPage(
                              style = "color: #1f2024", 
                              href = "https://github.com/rd11490/NBA_Tutorials/tree/master/five_man_net_rating", 
                              target = "_blank")),
-                        h5("Enter the current rating information and how far out to project.",
+                        #h2(a("Temporarily Down Because Andrew Did Something Stupid")),
+                        h5("Enter the current rating information and how many min/poss to add.",
                            style = "color: #991D37"),
                         sidebarLayout(
                             sidebarPanel(
@@ -49,10 +50,10 @@ ui <- fluidPage(
                                              choices = c("Possessions",
                                                          "Minutes")),
                                 numericInput(inputId = "count_val",
-                                             label = "Number of Poss or Min.",
+                                             label = "Number of Poss or Min. Played",
                                              value = 200),
-                                numericInput(inputId = "count_val_test",
-                                             label = "How Many Poss or Min. to Test?",
+                                numericInput(inputId = "count_val_add",
+                                             label = "How Many Poss or Min. to Add?",
                                              value = 10),
                                 actionButton(inputId = "run_test",
                                              label = "Should I Use This Rating?")
@@ -60,7 +61,7 @@ ui <- fluidPage(
                             mainPanel(
                                 verticalLayout(DT::dataTableOutput("test_table"),
                                                plotOutput('test_chart') %>% withSpinner(color = "#44a8f3")
-                                )
+                                               )
                                 )
                             )
                         )
@@ -76,13 +77,13 @@ server <- function(input, output) {
             
             poss_in <- input$count_val * 2
             
-            num_poss_flipped <- input$count_val_test * 2
+            num_poss_added <- input$count_val_add * 2
             
         } else {
             
             poss_in <- input$count_val
             
-            num_poss_flipped <- input$count_val_test 
+            num_poss_added <- input$count_val_add 
  
         }
         
@@ -93,13 +94,13 @@ server <- function(input, output) {
         
         points_in <- poss_in * ppp_in
         
-        ortg_miss_2 <- 100 * (points_in - 2 * num_poss_flipped)/(poss_in + num_poss_flipped)
+        ortg_miss_2 <- 100 * (points_in)/(poss_in + num_poss_added)
         
-        ortg_make_2 <- 100 * (points_in + 2 * num_poss_flipped)/(poss_in + num_poss_flipped)
+        ortg_make_2 <- 100 * (points_in + 2 * num_poss_added)/(poss_in + num_poss_added)
         
-        ortg_miss_3 <- 100 * (points_in - 3 * num_poss_flipped)/(poss_in + num_poss_flipped)
+        ortg_miss_3 <- 100 * (points_in)/(poss_in + num_poss_added)
         
-        ortg_make_3 <- 100 * (points_in + 3 * num_poss_flipped)/(poss_in + num_poss_flipped)
+        ortg_make_3 <- 100 * (points_in + 3 * num_poss_added)/(poss_in + num_poss_added)
         
         #### DRTG ####
         drtg_in <- input$drtg
@@ -108,31 +109,31 @@ server <- function(input, output) {
         
         points_in <- poss_in * ppp_in
         
-        drtg_make_2 <- 100 * (points_in + 2 * num_poss_flipped)/(poss_in + num_poss_flipped)
+        drtg_make_2 <- 100 * (points_in + 2 * num_poss_added)/(poss_in + num_poss_added)
         
-        drtg_miss_2 <- 100 * (points_in - 2 * num_poss_flipped)/(poss_in + num_poss_flipped)
+        drtg_miss_2 <- 100 * (points_in)/(poss_in + num_poss_added)
         
-        drtg_make_3 <- 100 * (points_in + 3 * num_poss_flipped)/(poss_in + num_poss_flipped)
+        drtg_make_3 <- 100 * (points_in + 3 * num_poss_added)/(poss_in + num_poss_added)
         
-        drtg_miss_3 <- 100 * (points_in - 3 * num_poss_flipped)/(poss_in + num_poss_flipped)
+        drtg_miss_3 <- 100 * (points_in)/(poss_in + num_poss_added)
         
         #### NetRTG ####
         netrtg_in <- ortg_in - drtg_in
         
-        netrtg_lwr_2 <- round(ortg_miss_2 - drtg_make_2, 1)
+        netrtg_lwr_2 <- round(ortg_miss_2 - drtg_make_2, 2)
         
-        netrtg_upr_2 <- round(ortg_make_2 - drtg_miss_2, 1) 
+        netrtg_upr_2 <- round(ortg_make_2 - drtg_miss_2, 2) 
         
-        netrtg_lwr_3 <- round(ortg_miss_3 - drtg_make_3, 1)
+        netrtg_lwr_3 <- round(ortg_miss_3 - drtg_make_3, 2)
         
-        netrtg_upr_3 <- round(ortg_make_3 - drtg_miss_3, 1) 
+        netrtg_upr_3 <- round(ortg_make_3 - drtg_miss_3, 2) 
         
         res <- data.frame(`Result Type` = c("Negative","Initial","Positive"),
                           `ORTG (FG2)` = c(ortg_miss_2, ortg_in, ortg_make_2),
                           `DRTG (FG2)` = c(drtg_make_2, drtg_in, drtg_miss_2),
                           `NetRTG (FG2)` = c(netrtg_lwr_2, netrtg_in, netrtg_upr_2),
-                          `ORTG (FG3)` = c(ortg_miss_2, ortg_in, ortg_make_2),
-                          `DRTG (FG3)` = c(drtg_make_2, drtg_in, drtg_miss_2),
+                          `ORTG (FG3)` = c(ortg_miss_3, ortg_in, ortg_make_3),
+                          `DRTG (FG3)` = c(drtg_make_3, drtg_in, drtg_miss_3),
                           `NetRTG (FG3)` = c(netrtg_lwr_3, netrtg_in, netrtg_upr_3),
                           check.names = FALSE) 
         
@@ -140,17 +141,17 @@ server <- function(input, output) {
         if(input$count_type == "Minutes") {
             
             res <- res %>% 
-                mutate(Minutes = c(input$count_val + input$count_val_test, 
+                mutate(Minutes = c(input$count_val + input$count_val_add, 
                                    input$count_val,
-                                   input$count_val + input$count_val_test)) %>% 
+                                   input$count_val + input$count_val_add)) %>% 
                 mutate_if(is.numeric, function(x) round(x, 1))
             
         } else {
             
             res <- res %>% 
-                mutate(Possessions = c(input$count_val + input$count_val_test, 
+                mutate(Possessions = c(input$count_val + input$count_val_add, 
                                    input$count_val,
-                                   input$count_val + input$count_val_test)) %>% 
+                                   input$count_val + input$count_val_add)) %>% 
                 mutate_if(is.numeric, function(x) round(x, 1))
             
         }
